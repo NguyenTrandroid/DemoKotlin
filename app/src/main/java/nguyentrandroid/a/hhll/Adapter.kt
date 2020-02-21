@@ -3,14 +3,11 @@ package nguyentrandroid.a.hhll
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.squareup.picasso.Picasso
 import de.hdodenhof.circleimageview.CircleImageView
-import nguyentrandroid.demohhll.model.Fi101
 import nguyentrandroid.demohhll.model.Hit
-import nguyentrandroid.demohhll.model.Hits
 
 class Apdapter(val notis: List<Hit>) : RecyclerView.Adapter<RecyclerViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerViewHolder {
