@@ -1,5 +1,4 @@
-package nguyentrandroid.demohhll.model
-
+package nguyentrandroid.a.mylibrary.modelClass
 data class Shards(
     val failed: Int,
     val skipped: Int,

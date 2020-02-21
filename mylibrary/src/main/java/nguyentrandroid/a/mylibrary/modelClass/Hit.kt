@@ -1,4 +1,4 @@
-package nguyentrandroid.demohhll.model
+package nguyentrandroid.a.mylibrary.modelClass
 
 data class Hit(
     val _id: String,

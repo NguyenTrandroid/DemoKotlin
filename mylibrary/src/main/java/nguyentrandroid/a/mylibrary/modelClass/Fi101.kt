@@ -1,5 +1,4 @@
-package nguyentrandroid.demohhll.model
-
+package nguyentrandroid.a.mylibrary.modelClass
 data class Fi101(
     val iv102: String,
     val iv103: String,
