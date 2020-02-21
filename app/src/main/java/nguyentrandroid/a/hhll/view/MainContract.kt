@@ -1,5 +1,6 @@
 package nguyentrandroid.a.hhll.view
 
+import androidx.lifecycle.LiveData
 import nguyentrandroid.demohhll.model.Data
 
 interface MainContract {
@@ -11,7 +12,7 @@ interface MainContract {
     }
 
     interface Presenter{
-        fun getFoods()
+        fun getData(live:LiveData<Data>)
         fun attachView(view: View)
         fun detachView()
     }
