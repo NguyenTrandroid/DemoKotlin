@@ -1,5 +1,7 @@
 package nguyentrandroid.a.mylibrary
+
 import ApiService
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -17,13 +19,16 @@ class HomeRepository {
 
     fun LoadData(): LiveData<Data> {
         var liveData = MutableLiveData<Data>()
-        liveData.postValue(null)
         apiService?.GetData()?.subscribeOn(Schedulers.io())
             ?.observeOn(AndroidSchedulers.mainThread())
             ?.subscribe(
-                { result -> liveData.postValue(result) },
-                { error -> }
+                { result ->
+                    Log.d("AAA", result.took.toString())
+                    liveData.value = result
+                },
+                { error -> Log.d("AAA", "" + error) }
             )
+
         return liveData
     }
 }

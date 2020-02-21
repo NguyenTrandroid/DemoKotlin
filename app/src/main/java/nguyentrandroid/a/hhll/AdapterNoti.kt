@@ -7,9 +7,9 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.squareup.picasso.Picasso
 import de.hdodenhof.circleimageview.CircleImageView
-import nguyentrandroid.demohhll.model.Hit
+import nguyentrandroid.a.mylibrary.modelClass.Hit
 
-class Apdapter(val notis: List<Hit>) : RecyclerView.Adapter<RecyclerViewHolder>() {
+class ApdapterNoti(val notis: List<Hit>) : RecyclerView.Adapter<RecyclerViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.item_noti, parent, false)
         return RecyclerViewHolder(view)
