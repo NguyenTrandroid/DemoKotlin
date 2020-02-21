@@ -10,14 +10,11 @@ import nguyentrandroid.demohhll.model.Data
 
 class HomeRepository {
     private var apiService: ApiService? = null
-
-
     init {
         apiService = ApiClient.client.create(ApiService::class.java)
     }
-
     fun LoadData() : LiveData<Data> {
-        var liveData = MutableLiveData<Data?>()
+        var liveData = MutableLiveData<Data>()
         liveData.postValue(null)
         apiService?.GetData()?.subscribeOn(Schedulers.io())
             ?.observeOn(AndroidSchedulers.mainThread())
@@ -25,7 +22,7 @@ class HomeRepository {
                 { result -> liveData.postValue(result) },
                 { error ->  }
             )
-        return liveData.value as LiveData<Data>
+        return liveData
     }
 
 }

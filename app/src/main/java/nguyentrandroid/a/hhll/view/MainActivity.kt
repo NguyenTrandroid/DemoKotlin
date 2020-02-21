@@ -7,37 +7,15 @@ import nguyentrandroid.a.hhll.R
 import nguyentrandroid.a.hhll.model.repos.HomeRepository
 import nguyentrandroid.demohhll.model.Data
 
-class MainActivity : AppCompatActivity(),
-    MainContract.View {
+class MainActivity : AppCompatActivity() {
     private var presenter: MainPresenter? = null
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         presenter = MainPresenter(HomeRepository())
-
         presenter!!._data.observe(this@MainActivity, Observer {
-
-
+            // lm gì đó...
         })
     }
-
-    override fun showWait() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
-
-    override fun removeWait() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
-
-    override fun showData(data: Data) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
-
-    override fun onFailure(message: String) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
-
-
 }
 
