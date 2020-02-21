@@ -12,7 +12,7 @@ interface MainContract {
     }
 
     interface Presenter{
-        fun getData(live:LiveData<Data>)
+        fun getData()
         fun attachView(view: View)
         fun detachView()
     }

@@ -16,7 +16,7 @@ class MainActivity : AppCompatActivity(),
         setContentView(R.layout.activity_main)
         presenter = MainPresenter(HomeRepository())
 
-        presenter!!.dataResult.observe(this@MainActivity, Observer {
+        presenter!!._data.observe(this@MainActivity, Observer {
 
 
         })
