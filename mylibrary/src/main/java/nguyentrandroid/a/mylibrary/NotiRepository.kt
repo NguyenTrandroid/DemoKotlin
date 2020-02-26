@@ -1,6 +1,7 @@
 package nguyentrandroid.a.mylibrary
 
 import ApiService
+import android.annotation.SuppressLint
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -9,15 +10,17 @@ import io.reactivex.schedulers.Schedulers
 import nguyentrandroid.a.mylibrary.api.ApiClient
 import nguyentrandroid.a.mylibrary.modelClass.Data
 
-class HomeRepository {
+class NotiRepository {
     private var apiService: ApiService? = null
 
     init {
 
-        apiService = ApiClient.client.create(ApiService::class.java)
+        apiService = ApiClient.getClient().create(ApiService::class.java)
     }
 
+    @SuppressLint("CheckResult")
     fun LoadData(): LiveData<Data> {
+        apiService = ApiClient.getClient().create(ApiService::class.java)
         var liveData = MutableLiveData<Data>()
         apiService?.GetData()?.subscribeOn(Schedulers.io())
             ?.observeOn(AndroidSchedulers.mainThread())
@@ -26,7 +29,7 @@ class HomeRepository {
                     Log.d("AAA", result.took.toString())
                     liveData.value = result
                 },
-                { error -> Log.d("AAA", "" + error) }
+                { error -> liveData.postValue(null) }
             )
 
         return liveData
