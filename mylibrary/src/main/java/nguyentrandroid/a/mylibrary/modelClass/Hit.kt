@@ -16,7 +16,7 @@ data class Hit(
 
 )
 
-@Entity(tableName = "Hit_Room")
+@Entity(tableName = "noti_table")
 data class HitDB(
 
     @PrimaryKey @ColumnInfo(name = "id") val _id: String,

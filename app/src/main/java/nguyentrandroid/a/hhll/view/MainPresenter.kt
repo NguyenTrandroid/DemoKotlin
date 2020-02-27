@@ -1,20 +1,24 @@
 package nguyentrandroid.a.hhll.view
 
+import android.app.Application
+import android.content.Context
+import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import nguyentrandroid.a.mylibrary.NotiRepository
 import nguyentrandroid.a.mylibrary.modelClass.Data
 
-class MainPresenter(homeRepository: NotiRepository) : ViewModel() {
-    val str:String="adsadad"
 
-    val data:LiveData<Data>?=homeRepository.LoadData()
+class MainPresenter(notiRepository: NotiRepository) : ViewModel() {
 
 
-//    fun getData(): LiveData<Data> {
-//        data = homeRepository.LoadData()
-//        return homeRepository.LoadData()
+    val data: LiveData<Data>? = notiRepository?.LoadData()
+
+
+//    init {
+//        val notiDao = DB.getDatabase(context, viewModelScope).NotiDao()
+//        repository = NotiRepository(notiDao)
+//        allWords = repository.listNoti
+//        data = repository.LoadData()
 //    }
-
 }
