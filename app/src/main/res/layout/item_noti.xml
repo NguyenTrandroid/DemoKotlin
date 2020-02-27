@@ -29,10 +29,11 @@
             android:layout_height="wrap_content"
             android:layout_margin="5dp"
             android:layout_toRightOf="@id/img_avatar"
-            android:text="@{noti._source.fi101[0].iv102 + `đã bày tỏ cảm xúc về bài viết của bạn`}"
+            android:text="@{noti._source.fi101[0].iv102 + `đa bay to cam xuc ve bai viet cua ban`}"
             android:textSize="15sp" />
 
         <TextView
+            android:layout_marginBottom="5dp"
             android:id="@+id/tv_icon"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
