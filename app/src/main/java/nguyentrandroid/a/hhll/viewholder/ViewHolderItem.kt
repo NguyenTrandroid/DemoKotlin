@@ -1,14 +1,13 @@
 package nguyentrandroid.a.hhll.viewholder
 
-import android.view.View
+import androidx.databinding.ViewDataBinding
 import androidx.recyclerview.widget.RecyclerView
-import kotlinx.android.synthetic.main.item_noti.view.*
+import nguyentrandroid.a.hhll.BR
 
-class ViewHolderItem(itemView: View) : RecyclerView.ViewHolder(itemView) {
-    var imgAvt = itemView.img_avatar
-    var tvTitle = itemView.tv_title
-    var tvIcon = itemView.tv_icon
+class ViewHolderItem(val binding: ViewDataBinding) : RecyclerView.ViewHolder(binding.root) {
+    fun bind(data: Any) {
+        binding.setVariable(BR.noti,data)
+        binding.executePendingBindings()
 
-
-
+    }
 }
