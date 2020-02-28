@@ -9,6 +9,7 @@ fun NotifyResponse.toListNotify(): List<ItemNotify> {
         it?.forEach { it ->
             val itemNotify =
                 ItemNotify(it._id, it._index, it._source, it._type, it.sort)
+            listNotify.add(itemNotify)
         }
     }
     return listNotify
