@@ -24,6 +24,7 @@ class MainActivity : AppCompatActivity() {
         val binding =
             DataBindingUtil.setContentView<ActivityMainBinding>(this, R.layout.activity_main)
         binding.lifecycleOwner = this
+
         viewModel = getViewModel(MainViewModel::class.java,
             BaseViewModelFactory { MainViewModel("5bd2ec89a7262a092eb062f7", 50, application) })
         viewModel?.globalState?.observeForever {
@@ -41,7 +42,7 @@ class MainActivity : AppCompatActivity() {
                 "ERROR" -> {
                     viewModel?.getAllNotify()?.observeForever {
                         // use database off
-                        Log.d("AAA", "sizeDB " + it.size)
+                        
                         val adapter = NotifyOffApdapter(it)
                         rv_noti.adapter = adapter
                     }
@@ -50,6 +51,7 @@ class MainActivity : AppCompatActivity() {
             }
         }
     }
+
     private fun saveDataOff(listItemNotify: List<ItemNotify>) {
         viewModel?.deleteDataDB()
         listItemNotify.let {
