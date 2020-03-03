@@ -2,13 +2,7 @@ package nguyentrandroid.a.hhll.data.models.reponse.notify
 
 import com.google.gson.annotations.SerializedName
 
-data class NotifyResponse(
-    @field:SerializedName("root")
-    val root: NotiData?
-
-)
-
-data class NotiData (
+data class NotifyResponse (
 
     @field:SerializedName("took") val took : Int,
     @field:SerializedName("timed_out") val timed_out : Boolean,
@@ -57,7 +51,6 @@ data class _source (
     @field:SerializedName("seen") val seen : Int,
     @field:SerializedName("clicked") val clicked : Int
 )
-
 data class _shards (
 
     @field:SerializedName("total") val total : Int,
