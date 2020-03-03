@@ -1,4 +1,4 @@
-package nguyentrandroid.a.hhll.viewholder
+package nguyentrandroid.a.hhll.classes.viewholder
 
 import android.view.View
 import androidx.recyclerview.widget.RecyclerView

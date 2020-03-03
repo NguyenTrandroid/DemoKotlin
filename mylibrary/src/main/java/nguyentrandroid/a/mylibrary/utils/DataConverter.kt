@@ -14,6 +14,7 @@ class DataConverter {
     @TypeConverter
     fun stringToSource(string: String): Source = Gson().fromJson(string, Source::class.java)
 
+
     @TypeConverter
     fun sortToString(sort: List<Double>): String? {
         return Gson().toJson(sort)

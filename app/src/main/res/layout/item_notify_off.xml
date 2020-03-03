@@ -4,8 +4,8 @@
     <data>
 
         <variable
-            name="noti"
-            type="nguyentrandroid.a.mylibrary.modelClass.Hit" />
+            name="noti_off"
+            type="nguyentrandroid.a.hhll.data.models.entities.ItemNotifyDB" />
 
     </data>
 
@@ -19,7 +19,7 @@
             android:layout_height="match_parent"
             android:layout_centerVertical="true"
             android:layout_margin="5dp"
-            android:src="@{noti._source.fi101[0].iv103}"
+            android:src="@{noti_off.source.fi101[0].iv103}"
             app:civ_border_color="#fff"
             app:civ_border_width="2dp" />
 
@@ -29,18 +29,18 @@
             android:layout_height="wrap_content"
             android:layout_margin="5dp"
             android:layout_toRightOf="@id/img_avatar"
-            android:text="@{noti._source.fi101[0].iv102 + `đa bay to cam xuc ve bai viet cua ban`}"
+            android:text="@{noti_off.source.title}"
             android:textSize="15sp" />
 
         <TextView
-            android:layout_marginBottom="5dp"
             android:id="@+id/tv_icon"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_above="@id/img_space"
             android:layout_marginLeft="5dp"
+            android:layout_marginBottom="5dp"
             android:layout_toRightOf="@id/img_avatar"
-            android:text="@{noti._source.iv107}" />
+            android:text="@{noti_off.source.iv107}" />
 
         <ImageView
             android:id="@+id/img_space"
