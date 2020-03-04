@@ -4,6 +4,7 @@ import android.util.Log
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
+import com.jakewharton.retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import nguyentrandroid.a.hhll.data.services.NotifyService
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -30,7 +31,7 @@ class API {
                 null -> retrofit = Retrofit.Builder()
                     .baseUrl("https://es-api.hahalolo.com/")
                     .addConverterFactory(GsonConverterFactory.create())
-                    .addCallAdapterFactory(CoroutineCallAdapterFactory())
+                    .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                     .client(okHttpClient)
                     .build()
             }

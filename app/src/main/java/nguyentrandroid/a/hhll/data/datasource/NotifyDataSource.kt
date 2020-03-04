@@ -6,13 +6,12 @@ import androidx.paging.PageKeyedDataSource
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import nguyentrandroid.a.hhll.classes.utils.NetworkState
-import nguyentrandroid.a.hhll.data.models.mappers.toListNotify
 import nguyentrandroid.a.hhll.data.models.reponse.notify.Hit
 import nguyentrandroid.a.hhll.data.services.NotifyService
 import java.io.IOException
 import java.util.concurrent.Executor
 
-class NotifyDataSource( var scope: CoroutineScope?, private val apiNotify: NotifyService,  var userId: String?,  var retryExecutor: Executor?) : PageKeyedDataSource<String, Hit>() {
+class NotifyDataSource(var scope: CoroutineScope?, var service: NotifyService?, var retryExecutor: Executor?) : PageKeyedDataSource<String, Hit>() {
     private var retry: (() -> Any)? = null
     val networkState = MutableLiveData<NetworkState>()
     val initialLoad = MutableLiveData<NetworkState>()
@@ -31,14 +30,23 @@ class NotifyDataSource( var scope: CoroutineScope?, private val apiNotify: Notif
         initialLoad.postValue(NetworkState.LOADING)
         scope?.launch {
             try {
-                var response = apiNotify.getNotify(userId, params.requestedLoadSize).await()
-//                retry=null
-                response.hits.hits.let {
-                    callback.onResult(it, null, makeSort(response.hits.hits.lastOrNull()?.sort))
-                    networkState.postValue(NetworkState.LOADED)
-                    initialLoad.postValue(NetworkState.LOADED)
-                }
+                service?.getNotify("5bd2ec89a7262a092eb062f7", params.requestedLoadSize)?.subscribe({
 
+                  response ->
+                    Log.d("AAA","size "+response.hits.hits.size)
+                    callback.onResult(response.hits.hits,null,makeSort(response.hits.hits.lastOrNull()?.sort))
+              },{
+
+              })
+//                async {
+//////                retry=null
+////                    response.hits.hits.let {
+////                        Log.d("AAA","sizeeee "+it.size)
+////                        callback.onResult(it, null, makeSort(response.hits.hits.lastOrNull()?.sort))
+////                        networkState.postValue(NetworkState.LOADED)
+////                        initialLoad.postValue(NetworkState.LOADED)
+////                }
+////                }
             }catch (ioException: IOException){
                 retry = {
                     loadInitial(params, callback)
@@ -55,20 +63,29 @@ class NotifyDataSource( var scope: CoroutineScope?, private val apiNotify: Notif
 
         scope?.launch {
             try {
-                var response = apiNotify.getnotifyAfter(userId, params.requestedLoadSize, params.key).await()
+                service?.getNotify("5bd2ec89a7262a092eb062f7", params.requestedLoadSize)?.subscribe({
 
-//                retry=null
-                response.hits.hits.let {
-                    callback.onResult(it, makeSort(response.hits.hits.lastOrNull()?.sort))
-                    networkState.postValue(NetworkState.LOADED)
-                }
-            }catch (ioException: IOException){
-                retry = { loadAfter(params, callback) }
-                networkState.postValue(NetworkState.error(ioException.message ?: "unknown err"))
+                        response ->
+                    Log.d("AAA","size "+response.hits.hits.size)
+                    callback.onResult(response.hits.hits,makeSort(response.hits.hits.lastOrNull()?.sort))
+                },{
+
+                })
+//                var response = apiNotify.getnotifyAfter(userId, params.requestedLoadSize, params.key).await()
+//
+////                retry=null
+//                response.hits.hits.let {
+//                    callback.onResult(it, makeSort(response.hits.hits.lastOrNull()?.sort))
+//                    networkState.postValue(NetworkState.LOADED)
+
+            } catch (ioException: IOException) {
+//                retry = { loadAfter(params, callback) }
+//                networkState.postValue(NetworkState.error(ioException.message ?: "unknown err"))
+//            }
+
             }
 
         }
-
     }
 
     override fun loadBefore(params: LoadParams<String>, callback: LoadCallback<String, Hit>) {

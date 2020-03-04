@@ -1,46 +1,39 @@
 package nguyentrandroid.a.hhll.ui.notify
 
 import android.app.Application
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.SupervisorJob
-import kotlinx.coroutines.launch
+import androidx.paging.LivePagedListBuilder
+import androidx.paging.PagedList
 import nguyentrandroid.a.hhll.classes.bases.BaseViewModel
 import nguyentrandroid.a.hhll.classes.utils.Listing
 import nguyentrandroid.a.hhll.data.api.API
 import nguyentrandroid.a.hhll.data.datasource.NotifyDataSourceFactory
-import nguyentrandroid.a.hhll.data.db.NotifyDB
-import nguyentrandroid.a.hhll.data.db.NotifyDao
-import nguyentrandroid.a.hhll.data.models.entities.ItemNotify
-import nguyentrandroid.a.hhll.data.models.entities.ItemNotifyDB
-import nguyentrandroid.a.hhll.data.models.mappers.toListNotify
 import nguyentrandroid.a.hhll.data.models.reponse.notify.Hit
 import nguyentrandroid.a.hhll.data.repositories.NotifyRepositories
 import nguyentrandroid.a.hhll.data.services.NotifyService
-import java.util.concurrent.Executors
 
 
 class MainViewModel(u: String, l: Int, application: Application) : BaseViewModel(application) {
-    private val NETWORK_IO = Executors.newFixedThreadPool(5)
-    private var notifyDao: NotifyDao
-    private val _repository by lazy { NotifyRepositories.INSTANCE }
-    private val _listNotify = MutableLiveData<List<ItemNotify>>()
-    val listNotify: LiveData<List<ItemNotify>>
-        get() = _listNotify
+    //    private val NETWORK_IO = Executors.newFixedThreadPool(5)
+//    private var notifyDao: NotifyDao
+   private val _repository by lazy {NotifyRepositories.INSTANCE }
+//    private val _listNotify = MutableLiveData<List<ItemNotify>>()
+//    val listNotify: LiveData<List<ItemNotify>>
+//        get() = _listNotify
+//    private var dataSourceFactory: NotifyDataSourceFactory
+
+
 
 
     init {
 
-        notifyDao = NotifyDB.getDatabase(application).notifyDao()
-        getData(u, l)
+//        notifyDao = NotifyDB.getDatabase(application).notifyDao()
+           getData(u, l)
     }
 
     private fun getData(u: String, l: Int) {
         async {
-//            val notifyReponse = _repository.getNotify(u, l)
-//            _listNotify.postValue(notifyReponse.toListNotify())
         }
     }
 
@@ -57,8 +50,8 @@ class MainViewModel(u: String, l: Int, application: Application) : BaseViewModel
 //        return _repository.getAllNotify(notifyDao)
 //    }
 
-    fun getListing(u:String):Listing<Hit>{
-         return _repository.getDataListing(viewModelScope,u,10,NETWORK_IO)
+    fun getListing(): Listing<Hit> {
+        return _repository.getDataListing(viewModelScope)
     }
 }
 
