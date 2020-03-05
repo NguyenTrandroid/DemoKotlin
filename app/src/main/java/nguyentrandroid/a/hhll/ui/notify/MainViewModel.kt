@@ -17,19 +17,17 @@ import nguyentrandroid.a.hhll.data.services.NotifyService
 class MainViewModel(u: String, l: Int, application: Application) : BaseViewModel(application) {
     //    private val NETWORK_IO = Executors.newFixedThreadPool(5)
 //    private var notifyDao: NotifyDao
-   private val _repository by lazy {NotifyRepositories.INSTANCE }
+    private val _repository by lazy { NotifyRepositories.INSTANCE }
 //    private val _listNotify = MutableLiveData<List<ItemNotify>>()
 //    val listNotify: LiveData<List<ItemNotify>>
 //        get() = _listNotify
 //    private var dataSourceFactory: NotifyDataSourceFactory
 
 
-
-
     init {
 
 //        notifyDao = NotifyDB.getDatabase(application).notifyDao()
-           getData(u, l)
+        getData(u, l)
     }
 
     private fun getData(u: String, l: Int) {
@@ -52,6 +50,10 @@ class MainViewModel(u: String, l: Int, application: Application) : BaseViewModel
 
     fun getListing(): Listing<Hit> {
         return _repository.getDataListing(viewModelScope)
+    }
+
+    fun retry() {
+        return _repository.getDataListing(viewModelScope).retry?.invoke()
     }
 }
 

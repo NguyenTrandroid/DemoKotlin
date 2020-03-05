@@ -7,7 +7,7 @@ import de.hdodenhof.circleimageview.CircleImageView
 object ImageBindingAdapter {
     @JvmStatic
     @BindingAdapter("android:src")
-    fun setImageUrl(view: CircleImageView, url: String) {
-        Picasso.get().load(url).into(view)
+    fun setImageUrl(view: CircleImageView, url: String?) {
+        Picasso.get().load(url?:"https://media-cdn.hahalolo.com/5d356aacaf327704db8e865f/veRXqwwlnVz8lXIN.png")?.into(view)
     }
 }

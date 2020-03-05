@@ -4,6 +4,7 @@ import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.paging.PageKeyedDataSource
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 import nguyentrandroid.a.hhll.classes.utils.NetworkState
 import nguyentrandroid.a.hhll.data.models.reponse.notify.Hit
@@ -30,23 +31,15 @@ class NotifyDataSource(var scope: CoroutineScope?, var service: NotifyService?, 
         initialLoad.postValue(NetworkState.LOADING)
         scope?.launch {
             try {
-                service?.getNotify("5bd2ec89a7262a092eb062f7", params.requestedLoadSize)?.subscribe({
+                val response =
+                    service?.getNotify("5bd2ec89a7262a092eb062f7", params.requestedLoadSize)
+                        ?.await()
+                response?.hits?.hits?.let {
+                    callback.onResult(it, null, makeSort(it.lastOrNull()?.sort))
+                    networkState.postValue(NetworkState.LOADED)
+                    initialLoad.postValue(NetworkState.LOADED)
 
-                  response ->
-                    Log.d("AAA","size "+response.hits.hits.size)
-                    callback.onResult(response.hits.hits,null,makeSort(response.hits.hits.lastOrNull()?.sort))
-              },{
-
-              })
-//                async {
-//////                retry=null
-////                    response.hits.hits.let {
-////                        Log.d("AAA","sizeeee "+it.size)
-////                        callback.onResult(it, null, makeSort(response.hits.hits.lastOrNull()?.sort))
-////                        networkState.postValue(NetworkState.LOADED)
-////                        initialLoad.postValue(NetworkState.LOADED)
-////                }
-////                }
+                }
             }catch (ioException: IOException){
                 retry = {
                     loadInitial(params, callback)
@@ -63,33 +56,26 @@ class NotifyDataSource(var scope: CoroutineScope?, var service: NotifyService?, 
 
         scope?.launch {
             try {
-                service?.getNotify("5bd2ec89a7262a092eb062f7", params.requestedLoadSize)?.subscribe({
+                val response = service?.getnotifyAfter(
+                    "5bd2ec89a7262a092eb062f7",
+                    params.requestedLoadSize,
+                    params.key
+                )?.await()
 
-                        response ->
-                    Log.d("AAA","size "+response.hits.hits.size)
-                    callback.onResult(response.hits.hits,makeSort(response.hits.hits.lastOrNull()?.sort))
-                },{
-
-                })
-//                var response = apiNotify.getnotifyAfter(userId, params.requestedLoadSize, params.key).await()
-//
-////                retry=null
-//                response.hits.hits.let {
-//                    callback.onResult(it, makeSort(response.hits.hits.lastOrNull()?.sort))
-//                    networkState.postValue(NetworkState.LOADED)
+                response?.hits?.hits?.let {
+                    callback.onResult(it, makeSort(it.lastOrNull()?.sort))
+                    networkState.postValue(NetworkState.LOADED)
+                }
 
             } catch (ioException: IOException) {
-//                retry = { loadAfter(params, callback) }
-//                networkState.postValue(NetworkState.error(ioException.message ?: "unknown err"))
-//            }
-
+                retry = { loadAfter(params, callback) }
+                networkState.postValue(NetworkState.error(ioException.message ?: "unknown err"))
+            }
             }
 
         }
-    }
 
-    override fun loadBefore(params: LoadParams<String>, callback: LoadCallback<String, Hit>) {
-    }
+    override fun loadBefore(params: LoadParams<String>, callback: LoadCallback<String, Hit>) {}
 
     private fun makeSort(objects: List<Any>?): String {
         return try {
@@ -121,5 +107,4 @@ class NotifyDataSource(var scope: CoroutineScope?, var service: NotifyService?, 
             ""
         }
     }
-
 }

@@ -8,6 +8,5 @@ class ViewHolderItemNotifyOnl(val binding: ViewDataBinding) : RecyclerView.ViewH
     fun bind(data: Any) {
         binding.setVariable(BR.noti_onl,data)
         binding.executePendingBindings()
-
     }
 }

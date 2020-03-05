@@ -31,7 +31,7 @@ class API {
                 null -> retrofit = Retrofit.Builder()
                     .baseUrl("https://es-api.hahalolo.com/")
                     .addConverterFactory(GsonConverterFactory.create())
-                    .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+                    .addCallAdapterFactory(CoroutineCallAdapterFactory())
                     .client(okHttpClient)
                     .build()
             }

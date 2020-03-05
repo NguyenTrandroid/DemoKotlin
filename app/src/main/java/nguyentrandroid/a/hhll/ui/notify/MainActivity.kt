@@ -9,7 +9,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.activity_main.*
 import nguyentrandroid.a.hhll.R
-import nguyentrandroid.a.hhll.adapter.AdapterNotifyListing
+import nguyentrandroid.a.hhll.adapter.NotifyListingAdapter
 import nguyentrandroid.a.hhll.adapter.NotifyOffApdapter
 import nguyentrandroid.a.hhll.adapter.NotifyOnlApdapter
 import nguyentrandroid.a.hhll.classes.bases.BaseViewModelFactory
@@ -31,13 +31,18 @@ class MainActivity : AppCompatActivity() {
         viewModel = getViewModel(MainViewModel::class.java,
             BaseViewModelFactory { MainViewModel("5bd2ec89a7262a092eb062f7", 50, application) })
 
-        val adapter = AdapterNotifyListing()
+        val adapter = NotifyListingAdapter{
+            viewModel?.retry()
+        }
         rv_noti.layoutManager = LinearLayoutManager(this, RecyclerView.VERTICAL, false)
         rv_noti.adapter = adapter
 
         viewModel?.getListing()?.pagedList?.observeForever {
             adapter.submitList(it)
             Log.d("AAA","size "+it.size)
+        }
+        viewModel?.getListing()?.networkState?.observeForever {
+            adapter.setNetworkState(it)
         }
 
 
