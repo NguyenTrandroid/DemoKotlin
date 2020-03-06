@@ -9,13 +9,15 @@ private fun getErrorMessage(report: PagingRequestHelper.StatusReport): String {
     }.first()
 }
 
-fun PagingRequestHelper.createStatusLiveData(): LiveData<NetworkState> {
-    val liveData = MutableLiveData<NetworkState>()
+fun PagingRequestHelper.createStatusLiveData(
+    liveData: MutableLiveData<NetworkState>
+): LiveData<NetworkState> {
     addListener { report ->
         when {
             report.hasRunning() -> liveData.postValue(NetworkState.LOADING)
             report.hasError() -> liveData.postValue(
-                    NetworkState.error(getErrorMessage(report)))
+                NetworkState.error(getErrorMessage(report))
+            )
             else -> liveData.postValue(NetworkState.LOADED)
         }
     }

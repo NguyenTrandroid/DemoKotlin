@@ -15,14 +15,13 @@ import nguyentrandroid.a.hhll.data.models.reponse.notify.NotifyResponse
 interface NotifyDao {
 
     @Query("SELECT * from noti_table")
-    fun getAllNoti():  DataSource.Factory<Int, Hit>
-
+    fun getAllNoti(): DataSource.Factory<Int, Hit>
 
     @Query("SELECT * from noti_table")
-    suspend fun getAll(): List<Hit>
+    fun getAllDB(): LiveData<List<Hit>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-     suspend fun insert(hits:List<Hit>)
+    fun insert(hits: List<Hit>)
 
     @Query("DELETE FROM noti_table")
     suspend fun deleteAll()
