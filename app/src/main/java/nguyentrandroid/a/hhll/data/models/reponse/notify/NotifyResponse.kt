@@ -25,14 +25,12 @@ data class Hits(
 @Entity(tableName = "noti_table")
 @TypeConverters(DataConverter::class)
 data class Hit(
-    @PrimaryKey @ColumnInfo @field:SerializedName("_index") val _index: String,
+     @ColumnInfo @field:SerializedName("_index") val _index: String,
     @ColumnInfo @field:SerializedName("_type") val _type: String,
-    @ColumnInfo @field:SerializedName("_id") val _id: String,
+     @PrimaryKey @ColumnInfo @field:SerializedName("_id") val _id: String,
     //@field:SerializedName("_score") val _score: Any,
     @ColumnInfo @field:SerializedName("_source") val _source: _source,
-    @ColumnInfo @field:SerializedName("sort") val sort: List<Double>,
-    var indexInResponse: Int = -1
-
+    @ColumnInfo @field:SerializedName("sort") val sort: List<Double>
 )
 
 data class Fi102(

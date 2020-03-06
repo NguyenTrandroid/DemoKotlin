@@ -24,22 +24,16 @@ class NotifyDBAndNetworkRepositories() {
         lateinit var scope: CoroutineScope
         lateinit var dao: NotifyDao
         val notifyService: NotifyService = API.getClient().create(NotifyService::class.java)
-        val ioExecutor = Executors.newSingleThreadExecutor()
+        lateinit var ioExecutor:Executor
         val networkPageSize: Int = DEFAULT_NETWORK_PAGE_SIZE
         val INSTANCE = NotifyDBAndNetworkRepositories
 
         private fun insertResultIntoDb(body: List<Hit>) {
-            Log.d("AAA", "SizeBody ${body.lastOrNull()?._id}")
             scope.launch {
                 withContext(Dispatchers.Default) {
                     dao.insert(body)
-                    delay(1000)
-                    Log.d("AAA", "SizeBodyaf ${dao.getAll().size}")
                 }
-
             }
-
-
         }
 
         @MainThread
@@ -80,9 +74,10 @@ class NotifyDBAndNetworkRepositories() {
                 pageSize = networkPageSize,
                 boundaryCallback = boundaryCallback
             )
+
             return Listing(
                 pagedList = livePagedList,
-                networkState = boundaryCallback.networkState,
+                networkState = boundaryCallback.networkState ,
                 retry = {
                     boundaryCallback.helper.retryAllFailed()
                 },
@@ -92,10 +87,5 @@ class NotifyDBAndNetworkRepositories() {
                 refreshState = refreshState
             )
         }
-
-//        fun getALl(): LiveData<List<Hit>> {
-//            return dao.getAll()
-//        }
-
     }
 }

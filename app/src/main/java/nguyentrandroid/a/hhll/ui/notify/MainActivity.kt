@@ -32,20 +32,19 @@ class MainActivity : AppCompatActivity() {
         viewModel = getViewModel(MainViewModel::class.java,
             BaseViewModelFactory { MainViewModel("5bd2ec89a7262a092eb062f7", 50, application) })
 
-        val adapter = NotifyListingAdapter()
+        val adapter = NotifyListingAdapter{
+            viewModel?.retry()
+
+        }
+        viewModel?.getListing()?.networkState?.observeForever {
+            Log.d("AAA","Vo day ko ta")
+            adapter.setNetworkState(it)
+        }
         rv_noti.layoutManager = LinearLayoutManager(this, RecyclerView.VERTICAL, false)
         rv_noti.adapter = adapter
         viewModel?.getListing()?.pagedList?.observeForever {
             adapter.submitList(it)
-            Log.d("AAA","SizepagedList "+it.size)
         }
-        viewModel?.getListing()?.networkState?.observeForever {
-//            adapter.setNetworkState(it)
-//            Log.d("AAA","test"+it.status)
-        }
-//        viewModel?.getAll()?.observeForever {
-//            Log.d("AAA","SizeDB "+ it.size)
-//        }
     }
 }
 

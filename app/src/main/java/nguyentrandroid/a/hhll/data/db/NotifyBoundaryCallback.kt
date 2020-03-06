@@ -2,9 +2,13 @@ package nguyentrandroid.a.hhll.data.db
 
 import android.util.Log
 import androidx.annotation.MainThread
+import androidx.lifecycle.MutableLiveData
 import androidx.paging.PagedList
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import nguyentrandroid.a.hhll.classes.utils.NetworkState
 import nguyentrandroid.a.hhll.classes.utils.PagingRequestHelper
 import nguyentrandroid.a.hhll.classes.utils.createStatusLiveData
 import nguyentrandroid.a.hhll.data.models.reponse.notify.Hit
@@ -23,16 +27,29 @@ class NotifyBoundaryCallback(
 ) : PagedList.BoundaryCallback<Hit>() {
 
     val helper = PagingRequestHelper(ioExecutor)
-    val networkState = helper.createStatusLiveData()
+
+    val networkState = MutableLiveData<NetworkState>()
 
     @MainThread
     override fun onZeroItemsLoaded() {
         helper.runIfNotRunning(PagingRequestHelper.RequestType.INITIAL) {
+
             scope.launch {
                 try {
-                    val response = notifyService.getNotify(user, pageSize).await()
-                    insertItemsIntoDb(response.hits.hits, it)
+                    withContext(Dispatchers.Default) {
+                        networkState.value = NetworkState.LOADING
+
+                        val response = notifyService.getNotify(user, pageSize).await()
+                        insertItemsIntoDb(response.hits.hits, it)
+
+                        networkState.value = NetworkState.LOADED
+                    }
+
+
                 } catch (t: Throwable) {
+                    withContext(Dispatchers.Main) {
+                        networkState.value = NetworkState.error(t.message)
+                    }
                     it.recordFailure(t)
                 }
             }
@@ -44,11 +61,22 @@ class NotifyBoundaryCallback(
         helper.runIfNotRunning(PagingRequestHelper.RequestType.INITIAL) {
             scope.launch {
                 try {
-                    val response = notifyService.getnotifyAfter(user, pageSize,makeSort(itemAtEnd.sort)).await()
-                    insertItemsIntoDb(response.hits.hits, it)
-                    Log.d("AAA","ItemEnd"+response.hits.hits?.size)
+                    withContext(Dispatchers.Main) {
+                        networkState.value = NetworkState.LOADING
+                        val response =
+                            notifyService.getnotifyAfter(user, pageSize, makeSort(itemAtEnd.sort))
+                                .await()
+                        insertItemsIntoDb(response.hits.hits, it)
+                        networkState.value = NetworkState.LOADED
+
+                    }
+
                 } catch (t: Throwable) {
+                    withContext(Dispatchers.Main) {
+                        networkState.value = NetworkState.error(t.message)
+                    }
                     it.recordFailure(t)
+
                 }
             }
         }
@@ -58,15 +86,8 @@ class NotifyBoundaryCallback(
 
     private fun insertItemsIntoDb(response: List<Hit>, it: PagingRequestHelper.Request.Callback) {
         ioExecutor.execute {
-            Log.d("AAA","sizeAPI"+response.size)
             handleResponse(response)
             it.recordSuccess()
-        }
-    }
-    private fun test(it: PagingRequestHelper.Request.Callback){
-        ioExecutor.execute {
-            it.recordSuccess()
-
         }
     }
 

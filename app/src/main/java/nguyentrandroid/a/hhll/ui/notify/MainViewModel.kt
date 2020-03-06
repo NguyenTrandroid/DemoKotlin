@@ -3,6 +3,7 @@ package nguyentrandroid.a.hhll.ui.notify
 import android.app.Application
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.switchMap
 import androidx.paging.LivePagedListBuilder
 import androidx.paging.PagedList
 import nguyentrandroid.a.hhll.classes.bases.BaseViewModel
@@ -12,11 +13,12 @@ import nguyentrandroid.a.hhll.data.db.NotifyDB
 import nguyentrandroid.a.hhll.data.models.reponse.notify.Hit
 import nguyentrandroid.a.hhll.data.repositories.NotifyDBAndNetworkRepositories
 import nguyentrandroid.a.hhll.data.services.NotifyService
+import java.util.concurrent.Executors
 
 
 class MainViewModel(u: String, l: Int, application: Application) : BaseViewModel(application) {
-    //    private val NETWORK_IO = Executors.newFixedThreadPool(5)
-//    private var notifyDao: NotifyDao
+    var ioExecutor = Executors.newSingleThreadExecutor()
+    //    private var notifyDao: NotifyDao
     private val _repository by lazy { NotifyDBAndNetworkRepositories.INSTANCE }
     var user: String
 //    private val _listNotify = MutableLiveData<List<ItemNotify>>()
@@ -29,16 +31,15 @@ class MainViewModel(u: String, l: Int, application: Application) : BaseViewModel
         _repository.scope = viewModelScope
         _repository.dao = NotifyDB.getDatabase(application).notifyDao()
         user = u
+        _repository.ioExecutor = ioExecutor
 
     }
 
-    private fun getData(u: String, l: Int) {
-        async {
-        }
+
+    fun retry() {
+        return _repository.postsOfNotify(user).retry?.invoke()
     }
-//    fun getAll():LiveData<List<Hit>>{
-//        return _repository.getALl()
-//    }
+
     fun getListing(): Listing<Hit> {
         return _repository.postsOfNotify(user)
     }
