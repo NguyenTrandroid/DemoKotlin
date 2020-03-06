@@ -3,13 +3,12 @@ package nguyentrandroid.a.hhll.data.db
 import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
-import androidx.room.Room.databaseBuilder
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import nguyentrandroid.a.hhll.classes.utils.DataConverter
-import nguyentrandroid.a.hhll.data.models.entities.ItemNotifyDB
+import nguyentrandroid.a.hhll.data.models.reponse.notify.Hit
 
-@Database(entities = [ItemNotifyDB::class], version = 1, exportSchema = false)
+@Database(entities = [Hit::class], version = 1, exportSchema = false)
 @TypeConverters(DataConverter::class)
 abstract class NotifyDB : RoomDatabase() {
     abstract fun notifyDao(): NotifyDao

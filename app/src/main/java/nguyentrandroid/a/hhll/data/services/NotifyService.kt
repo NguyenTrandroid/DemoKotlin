@@ -3,6 +3,7 @@ package nguyentrandroid.a.hhll.data.services
 import io.reactivex.Observer
 import io.reactivex.Single
 import kotlinx.coroutines.Deferred
+import nguyentrandroid.a.hhll.data.models.reponse.notify.Hit
 import nguyentrandroid.a.hhll.data.models.reponse.notify.NotifyResponse
 import retrofit2.http.GET
 import retrofit2.http.Query
@@ -21,8 +22,5 @@ interface NotifyService {
         @Query("l") l: Int? = null,
         @Query("a") a: String? = null
     ): Deferred<NotifyResponse>
-
-
-
 
 }

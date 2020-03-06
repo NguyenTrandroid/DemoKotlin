@@ -5,6 +5,7 @@ import android.util.Log
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.SavedStateHandle
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.activity_main.*
@@ -31,61 +32,20 @@ class MainActivity : AppCompatActivity() {
         viewModel = getViewModel(MainViewModel::class.java,
             BaseViewModelFactory { MainViewModel("5bd2ec89a7262a092eb062f7", 50, application) })
 
-        val adapter = NotifyListingAdapter{
-            viewModel?.retry()
-        }
+        val adapter = NotifyListingAdapter()
         rv_noti.layoutManager = LinearLayoutManager(this, RecyclerView.VERTICAL, false)
         rv_noti.adapter = adapter
-
         viewModel?.getListing()?.pagedList?.observeForever {
             adapter.submitList(it)
-            Log.d("AAA","size "+it.size)
+            Log.d("AAA","SizepagedList "+it.size)
         }
         viewModel?.getListing()?.networkState?.observeForever {
-            adapter.setNetworkState(it)
+//            adapter.setNetworkState(it)
+//            Log.d("AAA","test"+it.status)
         }
-
-
-//        viewModel?.globalState?.observeForever {
-//            when (it.name) {
-//                "SHOW_LOADING" -> prb_load.visibility = View.VISIBLE
-//                "HIDE_LOADING" -> {
-//                    viewModel?.listNotify?.observeForever {
-//                        // use database onl
-//                        saveDataOff(it)
-//                        val adapter = NotifyOnlApdapter(it)
-//                        rv_noti.adapter = adapter
-//                    }
-//                    prb_load.visibility = View.INVISIBLE
-//                }
-//                "ERROR" -> {
-//                    viewModel?.getAllNotify()?.observeForever {
-//                        // use database off
-//
-//                        val adapter = NotifyOffApdapter(it)
-//                        rv_noti.adapter = adapter
-//                    }
-//                    prb_load.visibility = View.INVISIBLE
-//                }
-//            }
-//        }
-//        viewModel?.getListing("5bd2ec89a7262a092eb062f7")?.pagedList?.observeForever {
-//            val adapter = AdapterNotifyListing()
-//            adapter.submitList(it)
+//        viewModel?.getAll()?.observeForever {
+//            Log.d("AAA","SizeDB "+ it.size)
 //        }
     }
-
-//    private fun saveDataOff(listItemNotify: List<ItemNotify>) {
-//        viewModel?.deleteDataDB()
-//        listItemNotify.let {
-//            var i: Int = 0
-//            while (i < listItemNotify.size && i < 10) {
-//                val itemNotifyDB =
-//                    ItemNotifyDB(it[i]._id, it[i]._index, it[i]._type, it[i].sort, it[i]._source)
-//                viewModel?.insert(itemNotifyDB)
-//                i++
-//            }
-//        }
-//    }
 }
 

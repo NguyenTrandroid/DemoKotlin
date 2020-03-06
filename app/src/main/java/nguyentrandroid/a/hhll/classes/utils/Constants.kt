@@ -7,5 +7,6 @@ class Constants {
         const val COMMENT_POST = "halo_noti_comment_post"
         const val COMMENT_COMMENT = "halo_noti_comment_comment"
         const val SHARE_POST = "halo_noti_share_post"
+        const val DEFAULT_NETWORK_PAGE_SIZE = 10
     }
 }

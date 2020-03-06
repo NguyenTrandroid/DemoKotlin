@@ -1,6 +1,11 @@
 package nguyentrandroid.a.hhll.data.models.reponse.notify
 
+import androidx.room.ColumnInfo
+import androidx.room.Entity
+import androidx.room.PrimaryKey
+import androidx.room.TypeConverters
 import com.google.gson.annotations.SerializedName
+import nguyentrandroid.a.hhll.classes.utils.DataConverter
 
 data class NotifyResponse(
 
@@ -17,13 +22,17 @@ data class Hits(
     @field:SerializedName("hits") val hits: List<Hit>
 )
 
+@Entity(tableName = "noti_table")
+@TypeConverters(DataConverter::class)
 data class Hit(
-    @field:SerializedName("_index") val _index: String,
-    @field:SerializedName("_type") val _type: String,
-    @field:SerializedName("_id") val _id: String,
-    @field:SerializedName("_score") val _score: Any,
-    @field:SerializedName("_source") val _source: _source,
-    @field:SerializedName("sort") val sort: List<Double>
+    @PrimaryKey @ColumnInfo @field:SerializedName("_index") val _index: String,
+    @ColumnInfo @field:SerializedName("_type") val _type: String,
+    @ColumnInfo @field:SerializedName("_id") val _id: String,
+    //@field:SerializedName("_score") val _score: Any,
+    @ColumnInfo @field:SerializedName("_source") val _source: _source,
+    @ColumnInfo @field:SerializedName("sort") val sort: List<Double>,
+    var indexInResponse: Int = -1
+
 )
 
 data class Fi102(

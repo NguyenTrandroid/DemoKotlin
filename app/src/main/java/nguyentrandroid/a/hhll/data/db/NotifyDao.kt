@@ -1,22 +1,28 @@
 package nguyentrandroid.a.hhll.data.db
 
 import androidx.lifecycle.LiveData
+import androidx.paging.DataSource
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import kotlinx.coroutines.Deferred
 import nguyentrandroid.a.hhll.data.models.entities.ItemNotifyDB
+import nguyentrandroid.a.hhll.data.models.reponse.notify.Hit
 import nguyentrandroid.a.hhll.data.models.reponse.notify.NotifyResponse
 
 @Dao
 interface NotifyDao {
 
     @Query("SELECT * from noti_table")
-    fun getAllNoti(): LiveData<List<ItemNotifyDB>>
+    fun getAllNoti():  DataSource.Factory<Int, Hit>
 
-    @Insert(onConflict = OnConflictStrategy.IGNORE)
-    suspend fun insert(itemNotifyDB: ItemNotifyDB)
+
+    @Query("SELECT * from noti_table")
+    suspend fun getAll(): List<Hit>
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+     suspend fun insert(hits:List<Hit>)
 
     @Query("DELETE FROM noti_table")
     suspend fun deleteAll()

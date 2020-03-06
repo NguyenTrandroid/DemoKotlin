@@ -17,6 +17,9 @@ class NotifyListingItemViewHolder(val binding: ViewDataBinding) : RecyclerView.V
     fun bindTo(data: Hit?) {
         binding.setVariable(BR.noti_listing, data)
         binding.executePendingBindings()
+        binding.let {
+
+        }
     }
 
     companion object {
