@@ -15,6 +15,8 @@
  */
 package nguyentrandroid.a.hhll.classes.utils;
 
+import android.util.Log;
+
 import androidx.annotation.AnyThread;
 import androidx.annotation.GuardedBy;
 import androidx.annotation.NonNull;
@@ -230,6 +232,7 @@ public class PagingRequestHelper {
      * @return True if any request is retried, false otherwise.
      */
     public boolean retryAllFailed() {
+        Log.d("===","vo day khong");
         final RequestWrapper[] toBeRetried = new RequestWrapper[RequestType.values().length];
         boolean retried = false;
         synchronized (mLock) {

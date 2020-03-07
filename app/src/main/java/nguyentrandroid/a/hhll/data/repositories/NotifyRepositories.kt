@@ -39,7 +39,8 @@ class NotifyRepositories private constructor() {
         }
 
         @MainThread
-        private fun refresh(scope: CoroutineScope, networkState: MutableLiveData<NetworkState>, dao: NotifyDao, used: String): LiveData<NetworkState> {
+        private fun refresh(scope: CoroutineScope, dao: NotifyDao, used: String): LiveData<NetworkState> {
+            val networkState = MutableLiveData<NetworkState>()
             networkState.value = NetworkState.LOADING
             scope.launch {
                 try {
@@ -60,7 +61,7 @@ class NotifyRepositories private constructor() {
         }
 
         @MainThread
-        fun postsOfNotify(user: String, scope: CoroutineScope,dao: NotifyDao,networkState: MutableLiveData<NetworkState>): Listing<Hit> {
+        fun postsOfNotify(user: String, scope: CoroutineScope,dao: NotifyDao): Listing<Hit> {
             val boundaryCallback = NotifyBoundaryCallback(
                 user = user,
                 pageSize = networkPageSize,
@@ -68,12 +69,11 @@ class NotifyRepositories private constructor() {
                 dao =dao ,
                 notifyService = notifyService,
                 ioExecutor = ioExecutor,
-                handleResponse = this::insertResultIntoDb,
-                liveData = networkState
+                handleResponse = this::insertResultIntoDb
             )
             val refreshTrigger = MutableLiveData<Unit>()
             val refreshState = refreshTrigger.switchMap {
-                refresh(scope,networkState,dao,user)
+                refresh(scope,dao,user)
             }
             val livePagedList = dao.getAllNoti().toLiveData(
                 pageSize = networkPageSize,
@@ -81,7 +81,7 @@ class NotifyRepositories private constructor() {
             )
             return Listing(
                 pagedList = livePagedList,
-                networkState = networkState,
+                networkState = boundaryCallback.networkState,
                 retry = {
                     boundaryCallback.helper.retryAllFailed()
                 },

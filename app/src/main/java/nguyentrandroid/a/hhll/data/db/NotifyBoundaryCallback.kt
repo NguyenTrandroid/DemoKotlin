@@ -23,13 +23,11 @@ class NotifyBoundaryCallback(
     private val dao: NotifyDao,
     private val notifyService: NotifyService,
     private val ioExecutor: Executor,
-    private val handleResponse: (NotifyDao,List<Hit>) -> Unit,
-    private val liveData: MutableLiveData<NetworkState>
+    private val handleResponse: (NotifyDao, List<Hit>) -> Unit
 ) : PagedList.BoundaryCallback<Hit>() {
 
     val helper = PagingRequestHelper(ioExecutor)
-
-    val networkState = helper.createStatusLiveData(liveData)
+    val networkState = helper.createStatusLiveData()
 
     override fun onZeroItemsLoaded() {
         helper.runIfNotRunning(PagingRequestHelper.RequestType.INITIAL) {
@@ -40,7 +38,11 @@ class NotifyBoundaryCallback(
                         insertItemsIntoDb(response.hits.hits, it)
                     }
                 } catch (t: Throwable) {
-                    it.recordFailure(t)
+                    scope.launch {
+                        withContext(Dispatchers.Default) {
+                            it.recordFailure(t)
+                        }
+                    }
                 }
             }
         }
@@ -57,8 +59,11 @@ class NotifyBoundaryCallback(
                         insertItemsIntoDb(response.hits.hits, it)
                     }
                 } catch (t: Throwable) {
-                    it.recordFailure(t)
-
+                    scope.launch {
+                        withContext(Dispatchers.Default) {
+                            it.recordFailure(t)
+                        }
+                    }
                 }
             }
         }
@@ -66,7 +71,7 @@ class NotifyBoundaryCallback(
 
     private fun insertItemsIntoDb(response: List<Hit>, it: PagingRequestHelper.Request.Callback) {
         ioExecutor.execute {
-            handleResponse(dao,response)
+            handleResponse(dao, response)
             it.recordSuccess()
         }
     }
