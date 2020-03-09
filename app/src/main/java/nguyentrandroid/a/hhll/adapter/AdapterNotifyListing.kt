@@ -16,7 +16,8 @@ import nguyentrandroid.a.hhll.classes.viewholder.NotifyListingItemViewHolder
 import nguyentrandroid.a.hhll.data.models.reponse.notify.Hit
 
 class NotifyListingAdapter(private val retryCallback: () -> Unit) : PagedListAdapter<Hit, RecyclerView.ViewHolder>(NotiDiff) {
-    private var networkState: NetworkState? = null
+   private var networkState: NetworkState? = null
+
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {

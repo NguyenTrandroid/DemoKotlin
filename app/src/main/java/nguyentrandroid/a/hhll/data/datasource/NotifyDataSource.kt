@@ -117,7 +117,8 @@ class NotifyDataSource(
         }
     }
 
-    private fun SaveDataToDB(dao: NotifyDao?, hits: List<Hit>) {
+    private suspend fun SaveDataToDB(dao: NotifyDao?, hits: List<Hit>) {
+        dao?.deleteAll()
         dao?.insert(hits)
     }
 }

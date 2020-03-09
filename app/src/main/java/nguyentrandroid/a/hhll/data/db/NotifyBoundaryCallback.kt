@@ -35,7 +35,7 @@ class NotifyBoundaryCallback(
                 try {
                     withContext(Dispatchers.Default) {
                         val response = notifyService.getNotify(user, pageSize).await()
-                        insertItemsIntoDb(response.hits.hits, it)
+                       //insertItemsIntoDb(response.hits.hits, it)
                     }
                 } catch (t: Throwable) {
                     scope.launch {

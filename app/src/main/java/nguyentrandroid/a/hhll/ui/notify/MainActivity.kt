@@ -33,7 +33,8 @@ class MainActivity : AppCompatActivity() {
 
 
         adapter = NotifyListingAdapter {
-           getDBOff()
+            viewModel?.retryOnl("5bd2ec89a7262a092eb062f7")
+
         }
         rv_noti.layoutManager = LinearLayoutManager(this, RecyclerView.VERTICAL, false)
         rv_noti.adapter = adapter
@@ -42,10 +43,24 @@ class MainActivity : AppCompatActivity() {
         }
         viewModel?.getListingNotifyOnl("5bd2ec89a7262a092eb062f7")?.networkState?.observeForever {
             adapter?.setNetworkState(it)
+
+            if (it.status.toString().equals("FAILED")) {
+                getDBOff()
+            } else {
+                adapter?.setNetworkState(it)
+
+            }
         }
+
+        viewModel?.getSizeDB()?.observeForever {
+            Log.d("AAA", "Size ${it.size}")
+        }
+
+
     }
 
     private fun getDBOff() {
+        Log.d("AAA", "vao DB")
         val adapterDB = NotifyListingAdapter {
             viewModel?.retryDB()
         }
