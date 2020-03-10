@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <data>
+
+        <variable
+            name="noti_invite"
+            type="nguyentrandroid.a.hhll.data.models.reponse.notify.Hit" />
+
+    </data>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="80dp">
+
+        <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/img_avatar"
+            android:layout_width="80dp"
+            android:layout_height="match_parent"
+            android:layout_centerVertical="true"
+            android:layout_margin="5dp"
+            android:src="@{noti_invite._source.fi101[0].iv103}"
+            app:civ_border_color="#fff"
+            app:civ_border_width="2dp" />
+
+        <TextView
+            android:id="@+id/tv_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:layout_toRightOf="@id/img_avatar"
+            android:text="@{noti_invite._source.title}"
+            android:textSize="15sp" />
+        <TextView
+            android:visibility="invisible"
+            android:id="@+id/tv_sttAccept"
+            android:textSize="15sp"
+            android:layout_toRightOf="@id/img_avatar"
+            android:layout_above="@id/img_space"
+            android:text="call api update stt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+        <LinearLayout
+            android:layout_above="@id/img_space"
+            android:layout_centerHorizontal="true"
+            android:orientation="horizontal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+            <Button
+                android:id="@+id/bt_accept"
+                android:layout_centerHorizontal="true"
+                android:textSize="10sp"
+                android:text="Đồng ý"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"/>
+            <Button
+                android:id="@+id/bt_cancel"
+                android:layout_toRightOf="@id/bt_accept"
+                android:layout_centerHorizontal="true"
+                android:textSize="10sp"
+                android:text="Từ chối"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"/>
+        </LinearLayout>
+
+
+
+        <ImageView
+            android:id="@+id/img_space"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_alignParentBottom="true"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            android:background="#E7D4D4" />
+
+    </RelativeLayout>
+</layout>

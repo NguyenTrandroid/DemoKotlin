@@ -2,6 +2,7 @@ package nguyentrandroid.a.hhll.ui.notify
 
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.SavedStateHandle
@@ -13,10 +14,11 @@ import nguyentrandroid.a.hhll.adapter.NotifyListingAdapter
 import nguyentrandroid.a.hhll.classes.bases.BaseViewModelFactory
 import nguyentrandroid.a.hhll.classes.utils.Constants
 import nguyentrandroid.a.hhll.classes.utils.getViewModel
+import nguyentrandroid.a.hhll.classes.viewholder.onclickCallBack
 import nguyentrandroid.a.hhll.databinding.ActivityMainBinding
 
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), onclickCallBack {
     private var viewModel: MainViewModel? = null
     var adapter: NotifyListingAdapter? = null
     var handle = SavedStateHandle()
@@ -32,14 +34,12 @@ class MainActivity : AppCompatActivity() {
             BaseViewModelFactory { MainViewModel(application, handle) })
 
 
-        adapter = NotifyListingAdapter {
-            viewModel?.retryOnl("5bd2ec89a7262a092eb062f7")
-
-        }
+        adapter = NotifyListingAdapter(this@MainActivity)
         rv_noti.layoutManager = LinearLayoutManager(this, RecyclerView.VERTICAL, false)
         rv_noti.adapter = adapter
         viewModel?.getListingNotifyOnl("5bd2ec89a7262a092eb062f7")?.pagedList?.observeForever {
             adapter?.submitList(it)
+
         }
         viewModel?.getListingNotifyOnl("5bd2ec89a7262a092eb062f7")?.networkState?.observeForever {
             adapter?.setNetworkState(it)
@@ -61,9 +61,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun getDBOff() {
         Log.d("AAA", "vao DB")
-        val adapterDB = NotifyListingAdapter {
-            viewModel?.retryDB()
-        }
+        val adapterDB = NotifyListingAdapter(this)
         rv_noti.layoutManager = LinearLayoutManager(this, RecyclerView.VERTICAL, false)
         rv_noti.adapter = adapterDB
 
@@ -75,4 +73,26 @@ class MainActivity : AppCompatActivity() {
             adapterDB?.submitList(it)
         }
     }
+
+
+    override fun onClick(view: View, pos: Int) {
+        when (view.id) {
+            R.id.retry_button -> {
+            }
+            R.id.bt_accept -> {
+                Log.d("AAA","checkstt ${adapter?.currentList?.get(0)?._source?.checkAccept}")
+                adapter?.currentList?.get(pos)?._source?.checkAccept = true
+                adapter?.notifyItemChanged(pos)
+
+
+            }
+            R.id.bt_cancel -> {
+                adapter?.currentList?.get(pos)?._source?.checkAccept = true
+                adapter?.notifyItemChanged(pos)
+            }
+
+        }
+    }
+
+
 }

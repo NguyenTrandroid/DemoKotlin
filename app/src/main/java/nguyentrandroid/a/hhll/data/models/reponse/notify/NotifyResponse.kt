@@ -1,5 +1,6 @@
 package nguyentrandroid.a.hhll.data.models.reponse.notify
 
+import android.text.Spanned
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
@@ -62,7 +63,8 @@ data class _source(
     @field:SerializedName("fi102") val fi102: List<Fi102>,
     @field:SerializedName("seen") val seen: Int,
     @field:SerializedName("clicked") val clicked: Int,
-    var title: String
+    var title: String?,
+    var checkAccept:Boolean = false
 )
 
 data class _shards(

@@ -29,7 +29,7 @@ class API {
         fun getClient(): Retrofit {
             when (retrofit) {
                 null -> retrofit = Retrofit.Builder()
-                    .baseUrl("https://es-api.hahalolo.com/")
+                    .baseUrl("https://test-es-api.hahalolo.com/")
                     .addConverterFactory(GsonConverterFactory.create())
                     .addCallAdapterFactory(CoroutineCallAdapterFactory())
                     .client(okHttpClient)
