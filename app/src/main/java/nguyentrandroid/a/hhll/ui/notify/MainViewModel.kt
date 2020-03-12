@@ -3,6 +3,8 @@ package nguyentrandroid.a.hhll.ui.notify
 import android.app.Application
 import android.util.Log
 import androidx.lifecycle.*
+import com.squareup.inject.assisted.Assisted
+import com.squareup.inject.assisted.AssistedInject
 import nguyentrandroid.a.hhll.classes.bases.BaseViewModel
 import nguyentrandroid.a.hhll.classes.utils.Constants
 import nguyentrandroid.a.hhll.classes.utils.Listing
@@ -10,39 +12,43 @@ import nguyentrandroid.a.hhll.classes.utils.NetworkState
 import nguyentrandroid.a.hhll.data.db.NotifyDB
 import nguyentrandroid.a.hhll.data.db.NotifyDao
 import nguyentrandroid.a.hhll.data.models.reponse.notify.Hit
+import nguyentrandroid.a.hhll.data.models.reponse.notify.NotifyResponse
 import nguyentrandroid.a.hhll.data.repositories.NotifyRepositories
+import nguyentrandroid.a.hhll.data.services.NotifyService
+import nguyentrandroid.a.hhll.di.factory.AssistedSavedStateViewModelFactory
 
 
-class MainViewModel(application: Application, savedStateHandle: SavedStateHandle) :
+class MainViewModel @AssistedInject constructor(
+    application: Application, @Assisted private val savedStateHandle: SavedStateHandle,
+    notifyService: NotifyService
+) :
     BaseViewModel(application) {
+    @AssistedInject.Factory
+    interface Factory : AssistedSavedStateViewModelFactory<MainViewModel> {
+        override fun create(savedStateHandle: SavedStateHandle): MainViewModel
+    }
 
-    private val dao: NotifyDao
-    private val _repository by lazy { NotifyRepositories.INSTANCE }
+    private var user: String? = null
+    private val notifyRepositories = NotifyRepositories(notifyService)
+    private val _data = MutableLiveData<NotifyResponse>()
+    val data: LiveData<NotifyResponse>
+        get() = _data
+
 
     init {
-        dao = NotifyDB.getDatabase(application).notifyDao()
+        user = savedStateHandle.get(Constants.KEY_SAVESTATE)
+        getData()
     }
 
-    private val repoResultDB = savedStateHandle?.getLiveData<String>(Constants.KEY_SAVESTATE)?.map {
-        _repository.postsOfNotify(it, viewModelScope, dao)
-    }
-    val hitsDB = repoResultDB.switchMap { it.pagedList }
-    val networkStateDB = repoResultDB.switchMap { it.networkState }
-    fun getListingNotifyOnl(user: String): Listing<Hit> =
-        _repository.getListingNotifyOnl(user, viewModelScope, dao)
+    fun getListingNotifyOnl(): Listing<Hit> =
+        notifyRepositories.getListingNotifyOnl(user ?: "", viewModelScope)
 
-    fun getSizeDB(): LiveData<List<Hit>> = _repository.getDB(dao)
-    fun refresh() {
-        repoResultDB.value?.refresh?.invoke()
+    private fun getData() {
+        async {
+            _data.postValue(notifyRepositories.getData())
+
+        }
     }
 
-    fun retryDB() {
-        val listing = repoResultDB.value
-        listing?.retry?.invoke()
-    }
-
-    fun retryOnl(user: String) {
-        _repository.getListingNotifyOnl(user, viewModelScope, dao)?.retry?.invoke()
-    }
 
 }

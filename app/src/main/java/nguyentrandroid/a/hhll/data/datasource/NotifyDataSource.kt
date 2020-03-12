@@ -1,14 +1,9 @@
 package nguyentrandroid.a.hhll.data.datasource
-
-import android.app.Application
-import android.provider.Settings.Global.getString
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.paging.PageKeyedDataSource
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
-import nguyentrandroid.a.hhll.R
-import nguyentrandroid.a.hhll.classes.utils.Constants
 import nguyentrandroid.a.hhll.classes.utils.Constants.Companion.LIST_KEY
 import nguyentrandroid.a.hhll.classes.utils.NetworkState
 import nguyentrandroid.a.hhll.data.db.NotifyDao
@@ -75,7 +70,7 @@ class NotifyDataSource(
                             it._source.title = ""
                         }
                     }
-                    SaveDataToDB(dao, it)
+                    // SaveDataToDB(dao, it)
                     callback.onResult(it, null, makeSort(it.lastOrNull()?.sort))
                     networkState.postValue(NetworkState.LOADED)
                     initialLoad.postValue(NetworkState.LOADED)

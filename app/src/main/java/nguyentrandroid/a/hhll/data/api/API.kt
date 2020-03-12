@@ -1,16 +1,20 @@
 package nguyentrandroid.a.hhll.data.api
 
-import android.util.Log
+import android.app.Application
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
 import com.jakewharton.retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
+import dagger.Provides
 import nguyentrandroid.a.hhll.data.services.NotifyService
+import okhttp3.Cache
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import java.io.File
 import java.util.concurrent.TimeUnit
+import javax.inject.Singleton
 
 class API {
     companion object {
@@ -24,6 +28,7 @@ class API {
             .retryOnConnectionFailure(true)
             .addInterceptor(loggingInterceptor)
             .build()
+
         var retrofit: Retrofit? = null
 
         fun getClient(): Retrofit {
