@@ -70,7 +70,7 @@ class NotifyDataSource(
                             it._source.title = ""
                         }
                     }
-                    // SaveDataToDB(dao, it)
+                     SaveDataToDB(dao, it)
                     callback.onResult(it, null, makeSort(it.lastOrNull()?.sort))
                     networkState.postValue(NetworkState.LOADED)
                     initialLoad.postValue(NetworkState.LOADED)

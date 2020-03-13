@@ -48,11 +48,13 @@ class MainActivity : AppCompatActivity(), onclickCallBack {
         adapter = NotifyListingAdapter(this@MainActivity)
         rv_noti.layoutManager = LinearLayoutManager(this, RecyclerView.VERTICAL, false)
         rv_noti.adapter = adapter
-
         viewModel.getListingNotifyOnl().pagedList.observeForever {
             adapter?.submitList(it)
-
         }
+        viewModel?.getDb()?.observeForever {
+            Log.d("AAA","sizeDB ${it.size}")
+        }
+
     }
 
 //    private fun getDBOff() {

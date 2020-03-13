@@ -20,7 +20,8 @@ import nguyentrandroid.a.hhll.di.factory.AssistedSavedStateViewModelFactory
 
 class MainViewModel @AssistedInject constructor(
     application: Application, @Assisted private val savedStateHandle: SavedStateHandle,
-    notifyService: NotifyService
+    notifyService: NotifyService,
+    dao: NotifyDao
 ) :
     BaseViewModel(application) {
     @AssistedInject.Factory
@@ -29,15 +30,20 @@ class MainViewModel @AssistedInject constructor(
     }
 
     private var user: String? = null
-    private val notifyRepositories = NotifyRepositories(notifyService)
+    private val notifyRepositories = NotifyRepositories(notifyService, dao)
     private val _data = MutableLiveData<NotifyResponse>()
     val data: LiveData<NotifyResponse>
         get() = _data
 
 
     init {
+
         user = savedStateHandle.get(Constants.KEY_SAVESTATE)
         getData()
+    }
+
+    fun getDb(): LiveData<List<Hit>> {
+        return notifyRepositories.getDB()
     }
 
     fun getListingNotifyOnl(): Listing<Hit> =
@@ -46,7 +52,6 @@ class MainViewModel @AssistedInject constructor(
     private fun getData() {
         async {
             _data.postValue(notifyRepositories.getData())
-
         }
     }
 

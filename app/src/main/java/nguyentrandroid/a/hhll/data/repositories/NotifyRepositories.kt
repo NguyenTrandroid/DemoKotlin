@@ -23,7 +23,7 @@ import java.util.concurrent.Executors
 import javax.inject.Singleton
 
 @Singleton
-class NotifyRepositories(private val notifyService: NotifyService) {
+class NotifyRepositories(private val notifyService: NotifyService, private val dao: NotifyDao) {
     private val NETWORK_IO = Executors.newFixedThreadPool(5)
 
     suspend fun getData(): NotifyResponse {
@@ -31,7 +31,7 @@ class NotifyRepositories(private val notifyService: NotifyService) {
     }
 
     fun getListingNotifyOnl(usre: String, scope: CoroutineScope): Listing<Hit> {
-        val factoty = NotifyDataSourceFactory(usre, scope, notifyService, null, NETWORK_IO)
+        val factoty = NotifyDataSourceFactory(usre, scope, notifyService, dao, NETWORK_IO)
         var pagedListConfig = PagedList.Config.Builder().setEnablePlaceholders(false)
             .setInitialLoadSizeHint(DEFAULT_NETWORK_PAGE_SIZE)
             .setPageSize(DEFAULT_NETWORK_PAGE_SIZE)
@@ -54,6 +54,9 @@ class NotifyRepositories(private val notifyService: NotifyService) {
             },
             refreshState = refreshState
         )
+    }
+    fun getDB():LiveData<List<Hit>>{
+        return dao.getAllDB()
     }
 }
 
