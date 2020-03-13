@@ -1,15 +1,12 @@
 package nguyentrandroid.a.hhll.ui.notify
 
 import android.app.Application
-import android.util.Log
 import androidx.lifecycle.*
 import com.squareup.inject.assisted.Assisted
 import com.squareup.inject.assisted.AssistedInject
 import nguyentrandroid.a.hhll.classes.bases.BaseViewModel
 import nguyentrandroid.a.hhll.classes.utils.Constants
 import nguyentrandroid.a.hhll.classes.utils.Listing
-import nguyentrandroid.a.hhll.classes.utils.NetworkState
-import nguyentrandroid.a.hhll.data.db.NotifyDB
 import nguyentrandroid.a.hhll.data.db.NotifyDao
 import nguyentrandroid.a.hhll.data.models.reponse.notify.Hit
 import nguyentrandroid.a.hhll.data.models.reponse.notify.NotifyResponse

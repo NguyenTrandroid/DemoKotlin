@@ -1,20 +1,13 @@
 package nguyentrandroid.a.hhll.data.repositories
 
-import androidx.annotation.MainThread
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.switchMap
 import androidx.paging.LivePagedListBuilder
 import androidx.paging.PagedList
-import androidx.paging.toLiveData
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.launch
 import nguyentrandroid.a.hhll.classes.utils.Constants.Companion.DEFAULT_NETWORK_PAGE_SIZE
 import nguyentrandroid.a.hhll.classes.utils.Listing
-import nguyentrandroid.a.hhll.classes.utils.NetworkState
-import nguyentrandroid.a.hhll.data.api.API
 import nguyentrandroid.a.hhll.data.datasource.NotifyDataSourceFactory
-import nguyentrandroid.a.hhll.data.db.NotifyBoundaryCallback
 import nguyentrandroid.a.hhll.data.db.NotifyDao
 import nguyentrandroid.a.hhll.data.models.reponse.notify.Hit
 import nguyentrandroid.a.hhll.data.models.reponse.notify.NotifyResponse

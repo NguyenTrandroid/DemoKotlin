@@ -1,16 +1,12 @@
 package nguyentrandroid.a.hhll.classes.bases
 
 import android.app.Application
-import android.util.Log
-import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.ViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.Dispatchers.Default
 import kotlinx.coroutines.async
-import nguyentrandroid.a.hhll.data.db.NotifyDB
-import nguyentrandroid.a.hhll.data.db.NotifyDao
 
 abstract class BaseViewModel(application: Application) : ViewModel(), BasicState {
     protected val viewModelJob = Job()
