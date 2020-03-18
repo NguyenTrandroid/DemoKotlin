@@ -54,6 +54,7 @@ class ApiModule {
             .baseUrl("https://test-es-api.hahalolo.com/")
             .client(okHttpClient)
             .build()
+        
     }
     @Provides
     @Singleton

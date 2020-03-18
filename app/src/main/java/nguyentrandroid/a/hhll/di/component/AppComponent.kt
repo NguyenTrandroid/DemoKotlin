@@ -5,18 +5,15 @@ import dagger.BindsInstance
 import dagger.Component
 import dagger.android.support.AndroidSupportInjectionModule
 import nguyentrandroid.a.hhll.AppController
-import nguyentrandroid.a.hhll.di.module.ActivityModule
-import nguyentrandroid.a.hhll.di.module.ApiModule
-import nguyentrandroid.a.hhll.di.module.DBModule
-import nguyentrandroid.a.hhll.di.module.ViewModelModule
+import nguyentrandroid.a.hhll.di.module.*
 import javax.inject.Singleton
 
 @Component(
     modules = [
-        ApiModule::class,
-        DBModule::class,
+        DataModule::class,
         ViewModelModule::class,
         ActivityModule::class,
+        FragmentModule::class,
         AndroidSupportInjectionModule::class]
 )
 @Singleton

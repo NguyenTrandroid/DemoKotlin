@@ -1,10 +1,11 @@
-package nguyentrandroid.a.hhll.ui.notify
+package nguyentrandroid.a.hhll.ui
 
 import android.app.Application
 import androidx.lifecycle.*
 import com.squareup.inject.assisted.Assisted
 import com.squareup.inject.assisted.AssistedInject
 import nguyentrandroid.a.hhll.classes.bases.BaseViewModel
+import nguyentrandroid.a.hhll.classes.interfaces.NotificationRepositoryInterface
 import nguyentrandroid.a.hhll.classes.utils.Constants
 import nguyentrandroid.a.hhll.classes.utils.Listing
 import nguyentrandroid.a.hhll.data.db.NotifyDao
@@ -16,18 +17,17 @@ import nguyentrandroid.a.hhll.di.factory.AssistedSavedStateViewModelFactory
 
 
 class MainViewModel @AssistedInject constructor(
-    application: Application, @Assisted private val savedStateHandle: SavedStateHandle,
-    notifyService: NotifyService,
-    dao: NotifyDao
-) :
-    BaseViewModel(application) {
+    application: Application,
+    @Assisted private val savedStateHandle: SavedStateHandle,
+    private val notifyRepositories: NotificationRepositoryInterface
+) : BaseViewModel(application) {
+
     @AssistedInject.Factory
     interface Factory : AssistedSavedStateViewModelFactory<MainViewModel> {
         override fun create(savedStateHandle: SavedStateHandle): MainViewModel
     }
 
     private var user: String? = null
-    private val notifyRepositories = NotifyRepositories(notifyService, dao)
     private val _data = MutableLiveData<NotifyResponse>()
     val data: LiveData<NotifyResponse>
         get() = _data
@@ -43,14 +43,12 @@ class MainViewModel @AssistedInject constructor(
         return notifyRepositories.getDB()
     }
 
-    fun getListingNotifyOnl(): Listing<Hit> =
-        notifyRepositories.getListingNotifyOnl(user ?: "", viewModelScope)
+    fun getListingNotifyOnl(): Listing<Hit> = notifyRepositories.getListingNotifyOnl(user ?: "", viewModelScope)
 
     private fun getData() {
         async {
             _data.postValue(notifyRepositories.getData())
         }
     }
-
 
 }

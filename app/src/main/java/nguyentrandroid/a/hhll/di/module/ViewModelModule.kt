@@ -7,7 +7,7 @@ import dagger.Module
 import dagger.multibindings.IntoMap
 import nguyentrandroid.a.hhll.di.factory.AssistedSavedStateViewModelFactory
 import nguyentrandroid.a.hhll.di.factory.ViewModelKey
-import nguyentrandroid.a.hhll.ui.notify.MainViewModel
+import nguyentrandroid.a.hhll.ui.MainViewModel
 
 
 @AssistedModule

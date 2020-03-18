@@ -3,29 +3,28 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
-    <data>
-    </data>
+    <data></data>
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
         <ProgressBar
-            android:visibility="gone"
             android:id="@+id/prb_load"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerInParent="true" />
+            android:layout_centerInParent="true"
+            android:visibility="gone" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rv_noti"
+        <com.google.android.material.tabs.TabLayout
+            android:id="@+id/tl_tabs_container"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+            android:layout_height="20dp" />
+
+        <androidx.viewpager.widget.ViewPager
+            android:id="@+id/vp_fragments_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tl_tabs_container" />
     </RelativeLayout>
 </layout>
