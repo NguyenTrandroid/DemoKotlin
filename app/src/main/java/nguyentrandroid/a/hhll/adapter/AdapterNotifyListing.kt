@@ -8,6 +8,7 @@ import androidx.paging.PagedListAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import nguyentrandroid.a.hhll.R
+import nguyentrandroid.a.hhll.classes.interfaces.onclickCallBack
 import nguyentrandroid.a.hhll.classes.utils.Constants
 import nguyentrandroid.a.hhll.classes.utils.NetworkState
 import nguyentrandroid.a.hhll.classes.viewholder.*

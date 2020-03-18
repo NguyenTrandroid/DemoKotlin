@@ -2,13 +2,10 @@ package nguyentrandroid.a.hhll.ui.notify
 
 import android.content.Context
 import android.os.Bundle
-import android.provider.AlarmClock
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.os.bundleOf
-import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -18,12 +15,13 @@ import nguyentrandroid.a.hhll.R
 import nguyentrandroid.a.hhll.adapter.NotifyListingAdapter
 import nguyentrandroid.a.hhll.classes.bases.BaseFragment
 import nguyentrandroid.a.hhll.classes.utils.Constants
-import nguyentrandroid.a.hhll.classes.viewholder.onclickCallBack
+import nguyentrandroid.a.hhll.classes.interfaces.onclickCallBack
 import nguyentrandroid.a.hhll.di.factory.InjectingSavedStateViewModelFactory
 import nguyentrandroid.a.hhll.ui.MainViewModel
 import javax.inject.Inject
 
-class NotificationFragment : BaseFragment(), onclickCallBack {
+class NotificationFragment : BaseFragment(),
+    onclickCallBack {
 
     @Inject
     lateinit var abstractFactory: InjectingSavedStateViewModelFactory

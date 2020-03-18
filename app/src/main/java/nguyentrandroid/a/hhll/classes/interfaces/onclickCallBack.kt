@@ -1,4 +1,4 @@
-package nguyentrandroid.a.hhll.classes.viewholder
+package nguyentrandroid.a.hhll.classes.interfaces
 
 import android.view.View
 

@@ -1,6 +1,5 @@
 package nguyentrandroid.a.hhll.classes.viewholder
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,6 +8,7 @@ import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import nguyentrandroid.a.hhll.R
+import nguyentrandroid.a.hhll.classes.interfaces.onclickCallBack
 import nguyentrandroid.a.hhll.classes.utils.NetworkState
 import nguyentrandroid.a.hhll.classes.utils.Status
 
