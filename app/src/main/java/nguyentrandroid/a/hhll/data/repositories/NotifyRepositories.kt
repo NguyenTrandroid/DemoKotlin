@@ -1,5 +1,7 @@
 package nguyentrandroid.a.hhll.data.repositories
 
+import android.util.Log
+import androidx.annotation.MainThread
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.switchMap
 import androidx.paging.LivePagedListBuilder
@@ -13,23 +15,24 @@ import nguyentrandroid.a.hhll.data.db.NotifyDao
 import nguyentrandroid.a.hhll.data.models.reponse.notify.Hit
 import nguyentrandroid.a.hhll.data.models.reponse.notify.NotifyResponse
 import nguyentrandroid.a.hhll.data.services.NotifyService
+import java.util.concurrent.Executor
 import java.util.concurrent.Executors
 import javax.inject.Inject
 
 class NotifyRepositories @Inject constructor(private val notifyService: NotifyService, private val dao: NotifyDao) : NotificationRepositoryInterface {
-    private val NETWORK_IO = Executors.newFixedThreadPool(5)
 
     override suspend fun getData(): NotifyResponse {
         return notifyService.getNotify("5bd2ec89a7262a092eb062f7", 10).await()
     }
 
-    override fun getListingNotifyOnl(usre: String, scope: CoroutineScope): Listing<Hit> {
-        val factoty = NotifyDataSourceFactory(usre, scope, notifyService, dao, NETWORK_IO)
+    @MainThread
+    override fun getListingNotifyOnl(usre: String, scope: CoroutineScope,networkExecutor: Executor?): Listing<Hit> {
+        val factoty = NotifyDataSourceFactory(usre, scope, notifyService, dao, networkExecutor)
         var pagedListConfig = PagedList.Config.Builder().setEnablePlaceholders(false)
             .setInitialLoadSizeHint(DEFAULT_NETWORK_PAGE_SIZE)
             .setPageSize(DEFAULT_NETWORK_PAGE_SIZE)
         val livePagedList = LivePagedListBuilder<String, Hit>(factoty, pagedListConfig.build())
-            .setFetchExecutor(Executors.newFixedThreadPool(5))
+            .setFetchExecutor(networkExecutor!!)
             .build()
         val refreshState = factoty.sourceLiveData.switchMap {
             it.initialLoad

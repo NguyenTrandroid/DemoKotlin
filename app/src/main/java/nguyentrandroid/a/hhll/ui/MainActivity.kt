@@ -36,17 +36,9 @@ class MainActivity : BaseActivity() {
         setupViewPager(binding)
     }
 
-    override fun initViews() {
-//        val defArgs = bundleOf(KEY_SAVESTATE to "5bd2ec89a7262a092eb062f7")
-//        viewModel = ViewModelProvider(
-//            this,
-//            abstractFactory.create(this, defArgs)
-//        )[MainViewModel::class.java]
-    }
+    override fun initViews() {}
 
-    override fun observeData() {
-
-    }
+    override fun observeData() {}
 
     private fun setupViewPager(binding: ActivityMainBinding) {
         val adapter = ViewPagerAdapter(getSupportFragmentManager())

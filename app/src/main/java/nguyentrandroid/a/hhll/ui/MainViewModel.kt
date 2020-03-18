@@ -1,6 +1,7 @@
 package nguyentrandroid.a.hhll.ui
 
 import android.app.Application
+import android.util.Log
 import androidx.lifecycle.*
 import com.squareup.inject.assisted.Assisted
 import com.squareup.inject.assisted.AssistedInject
@@ -14,6 +15,7 @@ import nguyentrandroid.a.hhll.data.models.reponse.notify.NotifyResponse
 import nguyentrandroid.a.hhll.data.repositories.NotifyRepositories
 import nguyentrandroid.a.hhll.data.services.NotifyService
 import nguyentrandroid.a.hhll.di.factory.AssistedSavedStateViewModelFactory
+import java.util.concurrent.Executors
 
 
 class MainViewModel @AssistedInject constructor(
@@ -21,6 +23,7 @@ class MainViewModel @AssistedInject constructor(
     @Assisted private val savedStateHandle: SavedStateHandle,
     private val notifyRepositories: NotificationRepositoryInterface
 ) : BaseViewModel(application) {
+    private val NETWORK_IO = Executors.newFixedThreadPool(5)
 
     @AssistedInject.Factory
     interface Factory : AssistedSavedStateViewModelFactory<MainViewModel> {
@@ -36,19 +39,17 @@ class MainViewModel @AssistedInject constructor(
     init {
 
         user = savedStateHandle.get(Constants.KEY_SAVESTATE)
-        getData()
     }
 
-    fun getDb(): LiveData<List<Hit>> {
-        return notifyRepositories.getDB()
+    private val repoResul = savedStateHandle?.getLiveData<String>(Constants.KEY_SAVESTATE)?.map {
+        notifyRepositories.getListingNotifyOnl(it, viewModelScope, NETWORK_IO)
+    }
+    val networkState = repoResul.switchMap { it.networkState }
+    val listingHit = repoResul.switchMap { it.pagedList }
+    fun retry() {
+        val listing = repoResul.value
+        listing?.retry?.invoke()
     }
 
-    fun getListingNotifyOnl(): Listing<Hit> = notifyRepositories.getListingNotifyOnl(user ?: "", viewModelScope)
-
-    private fun getData() {
-        async {
-            _data.postValue(notifyRepositories.getData())
-        }
-    }
 
 }

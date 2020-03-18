@@ -35,11 +35,7 @@ class NotificationFragment : BaseFragment(), onclickCallBack {
         super.onAttach(context)
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_notification, container, false)
     }
 
@@ -55,15 +51,18 @@ class NotificationFragment : BaseFragment(), onclickCallBack {
     }
 
     override fun observeData() {
-        viewModel?.getListingNotifyOnl()?.pagedList?.observeForever {
+        viewModel?.listingHit?.observeForever {
             adapter?.submitList(it)
         }
-
+        viewModel?.networkState?.observeForever {
+            adapter?.setNetworkState(it)
+        }
     }
 
     override fun onClick(view: View, pos: Int) {
         when (view.id) {
             R.id.retry_button -> {
+                viewModel?.retry()
             }
             R.id.bt_accept -> {
                 adapter?.currentList?.get(pos)?._source?.checkAccept = true

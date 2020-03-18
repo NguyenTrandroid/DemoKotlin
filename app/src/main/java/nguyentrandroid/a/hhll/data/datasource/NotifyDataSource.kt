@@ -1,4 +1,5 @@
 package nguyentrandroid.a.hhll.data.datasource
+
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.paging.PageKeyedDataSource
@@ -70,11 +71,10 @@ class NotifyDataSource(
                             it._source.title = ""
                         }
                     }
-                     SaveDataToDB(dao, it)
+                    SaveDataToDB(dao, it)
                     callback.onResult(it, null, makeSort(it.lastOrNull()?.sort))
                     networkState.postValue(NetworkState.LOADED)
                     initialLoad.postValue(NetworkState.LOADED)
-
                 }
             } catch (ioException: IOException) {
                 retry = {
@@ -89,7 +89,6 @@ class NotifyDataSource(
 
     override fun loadAfter(params: LoadParams<String>, callback: LoadCallback<String, Hit>) {
         networkState.postValue(NetworkState.LOADING)
-
         scope?.launch {
             try {
                 val response = service?.getnotifyAfter(
@@ -101,9 +100,6 @@ class NotifyDataSource(
                 response?.hits?.hits?.let {
 
                     it.forEach {
-                        if (it._source.iv104.equals("noti_friend_invite_like")) {
-                            Log.d("AAA", "vo day")
-                        }
                         if (LIST_KEY.containsKey(it._source.iv104)) {
                             when (it._source.iv104) {
                                 "noti_friend_mention_user_in_comment",
@@ -129,8 +125,9 @@ class NotifyDataSource(
                         }
                     }
                     callback.onResult(it, makeSort(it.lastOrNull()?.sort))
-                    networkState.postValue(NetworkState.LOADED)
+
                 }
+                networkState.postValue(NetworkState.LOADED)
 
             } catch (ioException: IOException) {
                 retry = { loadAfter(params, callback) }
